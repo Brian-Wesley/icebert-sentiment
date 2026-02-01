@@ -8,4 +8,4 @@ In the data are titles of Icelandic news and their sentiment, which is annotated
 To download the full model, please visit https://www.modelscope.cn/models/BrianWesley/icebert-sentiment-finetuned
 and find icebert-sentiment-finetuned.zip
 
-Further improvement tomorrow.
+Further improvement upcoming...
