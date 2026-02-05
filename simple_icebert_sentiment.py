@@ -20,7 +20,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipe
 # ----------------------------------------------------------------------
 # Configuration - customize only if needed
 # ----------------------------------------------------------------------
-MODEL_PATH: str = "./icebert-sentiment-finetuned"  # Path to the saved model
+MODEL_PATH: str = "./icebert-sentiment-continued"  # Path to the saved model
 
 LABEL_NAMES: List[str] = ["NEGATIVE", "NEUTRAL", "POSITIVE"]
 
@@ -87,4 +87,5 @@ def main() -> None:
         print()  # blank line for readability
 
 if __name__ == "__main__":
+
     main()
