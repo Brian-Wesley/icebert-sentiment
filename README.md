@@ -4,7 +4,7 @@ A model to analyze the sentiment of Icelandic texts. Easy to train on PC.
 
 To use the latest version (v1.1) directly, please download the full model. 
 Visit https://www.modelscope.cn/models/BrianWesley/icebert-sentiment-finetuned
-and find icebert-sentiment-finetuned.zip. Then unzip the file.
+and find icebert-sentiment-v1.1.zip. Then unzip the file.
 Afterwards, run simple_icebert_sentiment.py in this repository. Inside is a simple user interface.
 
 If you want to train it yourself, there would be no need to download the model from ModelScope.
