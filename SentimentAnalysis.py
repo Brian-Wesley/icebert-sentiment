@@ -29,18 +29,17 @@ from datasets import ClassLabel
 # 1. Configuration
 # -----------------------------
 MODEL_NAME: str = "mideind/IceBERT"
-CSV_PATH: str = "icelandic_sentiment.csv"  # Columns: "text" (str), "label" (int 0=neg, 1=neu, 2=pos)
+CSV_PATH: str = "icelandic_sentiment_v1.2_shuffled.csv"  # Columns: "text" (str), "label" (int 0=neg, 1=neu, 2=pos)
 TRAIN_TEST_SPLIT: float = 0.2
 RANDOM_SEED: int = 42
 
-# Optimized hyperparameters for best results on ~2,700 examples
 TRAIN_BATCH_SIZE: int = 32
 EVAL_BATCH_SIZE: int = 32
 LEARNING_RATE: float = 3e-5
 NUM_EPOCHS: int = 30  # High max; early stopping will trigger earlier
 WARMUP_STEPS: int = 100
 WEIGHT_DECAY: float = 0.01
-OUTPUT_DIR: str = "./icebert-sentiment-finetuned"
+OUTPUT_DIR: str = "./icebert-sentiment-v1.4"
 
 
 # -----------------------------
@@ -92,21 +91,39 @@ raw_datasets = load_custom_dataset(CSV_PATH)
 print(f"Loaded {len(raw_datasets['train'])} train | {len(raw_datasets['test'])} test examples.")
 
 # -----------------------------
-# 3. Tokenization
+# 3. Tokenization (fixed version — no more hashing warning)
 # -----------------------------
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
 
-def tokenize_function(examples: Dict[str, list]) -> Dict[str, list]:
+# Pure function: tokenizer is now an explicit parameter → fully pickleable
+def tokenize_function(examples: Dict[str, list], tokenizer) -> Dict[str, list]:
+    """
+    Tokenize a batch of examples.
+
+    Args:
+        examples: Batch dict with "text" key.
+        tokenizer: The pretrained tokenizer instance.
+
+    Returns:
+        Dict with tokenized fields.
+    """
     return tokenizer(
         examples["text"],
         truncation=True,
         max_length=512,
-        padding=False,
+        padding=False,  # padding handled by DataCollatorWithPadding later
     )
 
 
-tokenized_datasets = raw_datasets.map(tokenize_function, batched=True, remove_columns=["text"])
+# Apply the map with explicit tokenizer argument
+tokenized_datasets = raw_datasets.map(
+    tokenize_function,
+    batched=True,
+    remove_columns=["text"],
+    fn_kwargs={"tokenizer": tokenizer},  # ← this is the crucial fix
+)
+
 tokenized_datasets = tokenized_datasets.rename_column("label", "labels")
 tokenized_datasets.set_format("torch")
 
@@ -154,8 +171,8 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model="f1_macro",
     greater_is_better=True,
-    bf16=False,
-    torch_compile=False,
+    bf16=True,
+    torch_compile=True,
     torch_compile_backend="eager",
     lr_scheduler_type="cosine",
     dataloader_num_workers=0,

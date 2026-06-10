@@ -27,8 +27,8 @@ from datasets import ClassLabel
 # 1. Configuration
 # -----------------------------
 MODEL_NAME: str = "mideind/IceBERT"  # Only used for tokenizer
-PREVIOUS_MODEL_DIR: str = "./icebert-sentiment-finetuned"  # ← Your old fine-tuned model
-CSV_PATH: str = "icelandic_sentiment_v1.1.csv"  # Combined old + new data
+PREVIOUS_MODEL_DIR: str = "./icebert-sentiment-v1.1"  # ← Your old fine-tuned model
+CSV_PATH: str = "icelandic_sentiment_v1.2.csv"  # Combined old + new data
 RANDOM_SEED: int = 42
 
 TRAIN_BATCH_SIZE: int = 32
@@ -37,7 +37,7 @@ LEARNING_RATE: float = 3e-5
 NUM_EPOCHS: int = 20  # Often fewer epochs needed when continuing
 WARMUP_STEPS: int = 50
 WEIGHT_DECAY: float = 0.01
-OUTPUT_DIR: str = "./icebert-sentiment-v1.1"
+OUTPUT_DIR: str = "./icebert-sentiment-v1.2"
 
 # -----------------------------
 # 2. Load and split (same as before)

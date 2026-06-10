@@ -27,8 +27,8 @@ from datasets import ClassLabel
 # Configuration (match your training script)
 # -----------------------------
 MODEL_NAME: str = "mideind/IceBERT"
-FINETUNED_DIR: str = "./icebert-sentiment-v1.1"   # Directory where trainer.save_model() saved the model
-CSV_PATH: str = "icelandic_sentiment_v1.1.csv"             # Same CSV used for training
+FINETUNED_DIR: str = "./icebert-sentiment-v1.4.1"   # Directory where trainer.save_model() saved the model
+CSV_PATH: str = "icelandic_sentiment_v1.2_shuffled.csv"             # Same CSV used for training
 TRAIN_TEST_SPLIT: float = 0.2
 RANDOM_SEED: int = 42
 EVAL_BATCH_SIZE: int = 32
@@ -191,6 +191,4 @@ plt.show()
 
 print("\nEvaluation complete! Plots saved as:")
 print("  - confusion_matrix_counts.png")
-
 print("  - confusion_matrix_normalized.png")
-
